@@ -10,14 +10,22 @@ import { UserCard } from "../organisms/user/UserCard";
 import { UseAllUsers } from "../../hooks/useAllUsers";
 import { User } from "../../types/api/user";
 import { UserDetailModal } from "../organisms/user/UserDetailModal";
+import { useSelectUser } from "../../hooks/useSelectUser";
 
 export const UserManagement: FC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getUsers, users, loading } = UseAllUsers();
+  const { onSelectUser, selectedUser } = useSelectUser();
 
   useEffect(() => getUsers(), []);
 
-  const onClickUser = useCallback(() => onOpen(), []);
+  // usersを依存配列に指定しないと、usersは初期値の空配列から更新されないまま利用されてしまう
+  const onClickUser = useCallback(
+    (id: number) => {
+      onSelectUser({ id, users, onOpen });
+    },
+    [users]
+  );
 
   return (
     <>
@@ -30,6 +38,7 @@ export const UserManagement: FC = memo(() => {
           {users.map((user: User) => (
             <WrapItem key={user.id}>
               <UserCard
+                id={user.id}
                 userName={user.username}
                 fullName={user.name}
                 imageUrl="https://source.unsplash.com/random"
@@ -39,7 +48,7 @@ export const UserManagement: FC = memo(() => {
           ))}
         </Wrap>
       )}
-      <UserDetailModal isOpen={isOpen} onClose={onClose} />
+      <UserDetailModal user={selectedUser} isOpen={isOpen} onClose={onClose} />
     </>
   );
 });
