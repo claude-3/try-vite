@@ -7,14 +7,14 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import { UserCard } from "../organisms/user/UserCard";
-import { UseAllUsers } from "../../hooks/useAllUsers";
+import { useAllUsers } from "../../hooks/useAllUsers";
 import { User } from "../../types/api/user";
 import { UserDetailModal } from "../organisms/user/UserDetailModal";
 import { useSelectUser } from "../../hooks/useSelectUser";
 
 export const UserManagement: FC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getUsers, users, loading } = UseAllUsers();
+  const { getUsers, users, loading } = useAllUsers();
   const { onSelectUser, selectedUser } = useSelectUser();
 
   useEffect(() => getUsers(), []);
