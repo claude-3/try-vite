@@ -11,11 +11,14 @@ import { useAllUsers } from "../../hooks/useAllUsers";
 import { User } from "../../types/api/user";
 import { UserDetailModal } from "../organisms/user/UserDetailModal";
 import { useSelectUser } from "../../hooks/useSelectUser";
+import { useLoginUser } from "../../hooks/useLoginUsers";
 
 export const UserManagement: FC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getUsers, users, loading } = useAllUsers();
   const { onSelectUser, selectedUser } = useSelectUser();
+  const { loginUser } = useLoginUser();
+  console.log(loginUser);
 
   useEffect(() => getUsers(), []);
 
